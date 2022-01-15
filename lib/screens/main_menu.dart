@@ -12,43 +12,42 @@ class MainMenu extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
-          barrierColor: Colors.black,
+            barrierColor: Colors.black,
             context: context,
             builder: (context) {
               return Dialog(
-                backgroundColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                   child: [
-                'Do You Want To Exit?'.text.xl2.widest.semiBold.make(),
-                20.heightBox,
-                [
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    elevation: 10,
-                    color: Colors.grey.withOpacity(0.3),
-                    height: 60,
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    },
-                    child: 'No'.text.white.widest.xl2.make(),
-                  ),
-                  20.widthBox,
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    elevation: 10,
-                    color: Colors.grey.withOpacity(0.3),
-                    height: 60,
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                    child: 'Yes'.text.white.widest.xl2.make(),
-                  )
-                ].row()
-              ].column(alignment: MainAxisAlignment.center)
-              );
+                    'Do You Want To Exit?'.text.xl2.widest.semiBold.make(),
+                    20.heightBox,
+                    [
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        elevation: 10,
+                        color: Colors.grey.withOpacity(0.3),
+                        height: 60,
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                        child: 'No'.text.white.widest.xl2.make(),
+                      ),
+                      20.widthBox,
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        elevation: 10,
+                        color: Colors.grey.withOpacity(0.3),
+                        height: 60,
+                        onPressed: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: 'Yes'.text.white.widest.xl2.make(),
+                      )
+                    ].row()
+                  ].column(alignment: MainAxisAlignment.center));
             });
       },
       child: Scaffold(

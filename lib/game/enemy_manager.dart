@@ -2,9 +2,10 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flutter_game/game/enemy.dart';
+import 'package:flutter_game/game/game.dart';
 import 'package:flutter_game/game/game_size.dart';
 
-class EnemyManager extends Component with GameSize {
+class EnemyManager extends Component with GameSize, HasGameRef<SpaceGame> {
   late Timer timer;
   Random random = Random();
 
@@ -22,7 +23,7 @@ class EnemyManager extends Component with GameSize {
     // screen coordinates
     Enemy enemy = Enemy(sprite: sprite, size: size, position: position);
     enemy.anchor = Anchor.center;
-    add(enemy);
+    gameRef.add(enemy);
   }
 
   @override

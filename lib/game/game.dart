@@ -5,18 +5,16 @@ import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/parallax.dart';
-import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_game/game/bullet.dart';
-import 'package:flutter_game/game/enemy.dart';
 import 'package:flutter_game/game/enemy_manager.dart';
 import 'package:flutter_game/game/game_size.dart';
 import 'package:flutter_game/game/player.dart';
-import 'package:flutter_game/widgets/overlays/game_over.dart';
 import 'package:flutter_game/widgets/overlays/pause_button.dart';
 import 'package:flutter_game/widgets/overlays/pause_menu.dart';
 
-class SpaceGame extends FlameGame with PanDetector, TapDetector {
+class SpaceGame extends FlameGame
+    with PanDetector, TapDetector, HasCollidables {
   late Player player;
   late EnemyManager _enemyManager;
   Offset? _pointerStartPosition;
@@ -26,7 +24,7 @@ class SpaceGame extends FlameGame with PanDetector, TapDetector {
   }
 
   bool _isLoaded = false;
-  bool _isGameOver = false;
+  bool isGameOver = false;
   late TextComponent playerScore;
   late TextComponent playerHealth;
 
@@ -61,55 +59,13 @@ class SpaceGame extends FlameGame with PanDetector, TapDetector {
       playerScore = TextComponent(text: 'Score : 0', position: Vector2(10, 10));
       add(playerScore);
 
-      // playerHealth =
-      //     TextComponent(text: 'Health : 100%', position: Vector2(10, 50));
-      // add(playerHealth);
+      playerHealth =
+          TextComponent(text: 'Health : 100%', position: Vector2(10, 50));
+      add(playerHealth);
 
-      camera.defaultShakeDuration = 0.01;
-      camera.defaultShakeIntensity = 10.0;
+      camera.defaultShakeDuration = 0.1;
+      camera.defaultShakeIntensity = 30.0;
       _isLoaded = true;
-    }
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-    final bullets = children.whereType<Bullet>();
-    for (final enemy in _enemyManager.children.whereType<Enemy>()) {
-      if (enemy.containsPoint(player.position)) {
-        // player.playerHealth -= 10;
-        // if (player.playerHealth < 0) {
-        //   playerHealth.text = 'Health : 0%';
-        // } else {
-        //   playerHealth.text = 'Health : ${player.playerHealth}%';
-        // }
-        _isGameOver = true;
-        camera.shake();
-        pauseEngine();
-        overlays.remove(PauseButton.ID);
-        overlays.add(GameOverMenu.ID);
-      }
-      for (final bullet in bullets) {
-        if (enemy.containsPoint(bullet.absoluteCenter)) {
-          _enemyManager.remove(enemy);
-          remove(bullet);
-          player.playerScore += 1;
-          playerScore.text = 'Score : ${player.playerScore}';
-          final particalComponent = ParticleComponent(Particle.generate(
-              count: 20,
-              lifespan: .5,
-              generator: (i) => AcceleratedParticle(
-                  acceleration: getRandomVector2(),
-                  speed: getRandomVector2(),
-                  position: bullet.position,
-                  child: CircleParticle(
-                    radius: 0.5,
-                    paint: Paint()..color = Colors.white,
-                  ))));
-          add(particalComponent);
-          break;
-        }
-      }
     }
   }
 
@@ -149,10 +105,10 @@ class SpaceGame extends FlameGame with PanDetector, TapDetector {
   }
 
   @override
-  void prepareComponent(Component c) {
-    super.prepareComponent(c);
-    if (c is GameSize) {
-      c.onResize(size);
+  void prepareComponent(Component component) {
+    super.prepareComponent(component);
+    if (component is GameSize) {
+      component.onResize(size);
     }
   }
 
@@ -175,7 +131,7 @@ class SpaceGame extends FlameGame with PanDetector, TapDetector {
       case AppLifecycleState.paused:
 
       case AppLifecycleState.detached:
-        if (!_isGameOver) {
+        if (!isGameOver) {
           pauseEngine();
           overlays.remove(PauseButton.ID);
           overlays.add(PauseMenu.ID);
