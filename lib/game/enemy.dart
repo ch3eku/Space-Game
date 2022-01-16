@@ -40,7 +40,7 @@ class Enemy extends SpriteComponent
     if (other is Bullet) {
       gameRef.remove(this);
       gameRef.player.playerScore += 1;
-      gameRef.playerScore.text = 'Score : ${gameRef.player.playerScore}';
+      gameRef.playerScoreText.text = 'Score : ${gameRef.player.playerScore}';
       final particalComponent = ParticleComponent(Particle.generate(
           count: 20,
           lifespan: .5,

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_game/game/game.dart';
+import 'package:flutter_game/widgets/overlays/pause_button.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class GameOverMenu extends StatelessWidget {
@@ -23,7 +24,12 @@ class GameOverMenu extends StatelessWidget {
           elevation: 10,
           color: Colors.grey.withOpacity(0.1),
           height: 60,
-          onPressed: () {},
+          onPressed: () {
+            gameRef.overlays.remove(GameOverMenu.ID);
+            gameRef.reSet();
+            gameRef.resumeEngine();
+            gameRef.overlays.add(PauseButton.ID);
+          },
           child: 'Play Again'.text.white.widest.xl2.make(),
         ),
         50.heightBox,
@@ -36,8 +42,6 @@ class GameOverMenu extends StatelessWidget {
           onPressed: () {
             gameRef.overlays.remove(GameOverMenu.ID);
             Navigator.pop(context);
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => MainMenu()));
           },
           child: 'Exit'.text.white.widest.xl2.make(),
         )

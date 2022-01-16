@@ -43,4 +43,9 @@ class EnemyManager extends Component with GameSize, HasGameRef<SpaceGame> {
     super.update(dt);
     timer.update(dt);
   }
+
+  void reSet() {
+    timer.stop();
+    timer.start();
+  }
 }

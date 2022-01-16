@@ -7,9 +7,11 @@ import 'package:flame/input.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_game/game/bullet.dart';
+import 'package:flutter_game/game/enemy.dart';
 import 'package:flutter_game/game/enemy_manager.dart';
 import 'package:flutter_game/game/game_size.dart';
 import 'package:flutter_game/game/player.dart';
+import 'package:flutter_game/widgets/overlays/game_over.dart';
 import 'package:flutter_game/widgets/overlays/pause_button.dart';
 import 'package:flutter_game/widgets/overlays/pause_menu.dart';
 
@@ -25,8 +27,8 @@ class SpaceGame extends FlameGame
 
   bool _isLoaded = false;
   bool isGameOver = false;
-  late TextComponent playerScore;
-  late TextComponent playerHealth;
+  late TextComponent playerScoreText;
+  late TextComponent playerHealthText;
 
   @override
   Future<void>? onLoad() async {
@@ -56,16 +58,28 @@ class SpaceGame extends FlameGame
       _enemyManager = EnemyManager();
       add(_enemyManager);
 
-      playerScore = TextComponent(text: 'Score : 0', position: Vector2(10, 10));
-      add(playerScore);
+      playerScoreText = TextComponent(text: 'Score : 0', position: Vector2(10, 10));
+      add(playerScoreText);
 
-      playerHealth =
+      playerHealthText =
           TextComponent(text: 'Health : 100%', position: Vector2(10, 50));
-      add(playerHealth);
+      add(playerHealthText);
 
       camera.defaultShakeDuration = 0.1;
       camera.defaultShakeIntensity = 30.0;
       _isLoaded = true;
+    }
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    playerHealthText.text = 'Health : ${player.playerHealth}%';
+    if (player.playerHealth <= 0 && !camera.shaking) {
+      isGameOver = true;
+      pauseEngine();
+      overlays.remove(PauseButton.ID);
+      overlays.add(GameOverMenu.ID);
     }
   }
 
@@ -139,5 +153,18 @@ class SpaceGame extends FlameGame
         break;
       default:
     }
+  }
+
+  void reSet() {
+    player.reSet();
+    _enemyManager.reSet();
+
+    children.whereType<Enemy>().forEach((element) {
+      remove(element);
+    });
+
+    children.whereType<Bullet>().forEach((element) {
+      remove(element);
+    });
   }
 }

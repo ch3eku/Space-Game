@@ -40,9 +40,22 @@ class PauseMenu extends StatelessWidget {
           height: 60,
           onPressed: () {
             gameRef.overlays.remove(PauseMenu.ID);
+            gameRef.overlays.add(PauseButton.ID);
+            gameRef.reSet();
+            gameRef.resumeEngine();
+          },
+          child: 'Reset'.text.white.widest.xl2.make(),
+        ),
+        50.heightBox,
+        MaterialButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          elevation: 10,
+          color: Colors.grey.withOpacity(0.1),
+          height: 60,
+          onPressed: () {
+            gameRef.overlays.remove(PauseMenu.ID);
             Navigator.pop(context);
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => MainMenu()));
           },
           child: 'Exit'.text.white.widest.xl2.make(),
         )
