@@ -2,6 +2,7 @@
 
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game/screens/main_menu.dart';
 import 'package:flutter_game/screens/splash_screen.dart';
 
 Future<void> main() async {
@@ -15,6 +16,9 @@ Future<void> main() async {
         fontFamily: 'Bungee Outline',
         scaffoldBackgroundColor: Colors.black),
     debugShowCheckedModeBanner: false,
+    routes: <String, WidgetBuilder>{
+      "/mainmanu": (BuildContext context) => MainMenu(),
+    },
     home: SplashScreen(),
   ));
 }

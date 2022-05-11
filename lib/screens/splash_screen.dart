@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter_game/screens/main_menu.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'dart:math' as math;
 
@@ -48,8 +47,8 @@ class _SplashScreenState extends State<SplashScreen>
     )..repeat();
     Future.delayed(
         const Duration(seconds: 5),
-        () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainMenu())));
+        () => Navigator.of(context).pushNamedAndRemoveUntil(
+            '/mainmanu', (Route<dynamic> route) => false));
   }
 
   @override
